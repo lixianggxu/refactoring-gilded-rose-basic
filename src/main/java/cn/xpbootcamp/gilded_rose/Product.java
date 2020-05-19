@@ -2,11 +2,11 @@ package cn.xpbootcamp.gilded_rose;
 
 public class Product {
 
-    public String name;
+    private String name;
 
-    public int sellIn;
+    private int sellIn;
 
-    public int quality;
+    private int quality;
 
     public Product(String name, int sellIn, int quality) {
         this.name = name;
