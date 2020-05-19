@@ -10,74 +10,74 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GildedRoseTest {
 
-    private static Product createItem(String name, int sellIn, int quality) {
+    private static Product createProduct(String name, int sellIn, int quality) {
         return new Product(name, sellIn, quality);
     }
 
-    private static Stream<TestFixture> provideAgedBries() {
+    private static Stream<ProductFixture> provideAgedBries() {
         return Stream.of(
-                TestFixture.createAgedBrie(2, 0, 1, 1),
-                TestFixture.createAgedBrie(2, 49, 1, 50),
-                TestFixture.createAgedBrie(2, 50, 1, 50),
-                TestFixture.createAgedBrie(0, 20, -1, 22),
-                TestFixture.createAgedBrie(-1, 20, -2, 22)
+                ProductFixture.createAgedBrie(2, 0, 1, 1),
+                ProductFixture.createAgedBrie(2, 49, 1, 50),
+                ProductFixture.createAgedBrie(2, 50, 1, 50),
+                ProductFixture.createAgedBrie(0, 20, -1, 22),
+                ProductFixture.createAgedBrie(-1, 20, -2, 22)
         );
     }
 
-    private static Stream<TestFixture> provideBackstagePass() {
+    private static Stream<ProductFixture> provideBackstagePass() {
         return Stream.of(
-                TestFixture.createBackstagePass(15, 20, 14, 21),
-                TestFixture.createBackstagePass(11, 20, 10, 21),
-                TestFixture.createBackstagePass(10, 45, 9, 47),
-                TestFixture.createBackstagePass(9, 45, 8, 47),
-                TestFixture.createBackstagePass(10, 49, 9, 50),
-                TestFixture.createBackstagePass(10, 50, 9, 50),
-                TestFixture.createBackstagePass(6, 45, 5, 47),
-                TestFixture.createBackstagePass(5, 45, 4, 48),
-                TestFixture.createBackstagePass(5, 49, 4, 50),
-                TestFixture.createBackstagePass(1, 20, 0, 23),
-                TestFixture.createBackstagePass(0, 20, -1, 0)
+                ProductFixture.createBackstagePass(15, 20, 14, 21),
+                ProductFixture.createBackstagePass(11, 20, 10, 21),
+                ProductFixture.createBackstagePass(10, 45, 9, 47),
+                ProductFixture.createBackstagePass(9, 45, 8, 47),
+                ProductFixture.createBackstagePass(10, 49, 9, 50),
+                ProductFixture.createBackstagePass(10, 50, 9, 50),
+                ProductFixture.createBackstagePass(6, 45, 5, 47),
+                ProductFixture.createBackstagePass(5, 45, 4, 48),
+                ProductFixture.createBackstagePass(5, 49, 4, 50),
+                ProductFixture.createBackstagePass(1, 20, 0, 23),
+                ProductFixture.createBackstagePass(0, 20, -1, 0)
         );
     }
 
-    private static Stream<TestFixture> provideSulfuras() {
+    private static Stream<ProductFixture> provideSulfuras() {
         return Stream.of(
-                TestFixture.createSulfuras(-1, 50, -1, 50),
-                TestFixture.createSulfuras(-1, 1, -1, 1),
-                TestFixture.createSulfuras(-2, 1, -2, 1),
-                TestFixture.createSulfuras(1, 1, 1, 1)
+                ProductFixture.createSulfuras(-1, 50, -1, 50),
+                ProductFixture.createSulfuras(-1, 1, -1, 1),
+                ProductFixture.createSulfuras(-2, 1, -2, 1),
+                ProductFixture.createSulfuras(1, 1, 1, 1)
         );
     }
 
-    private static Stream<TestFixture> provideRegularItems() {
+    private static Stream<ProductFixture> provideRegularProducts() {
         return Stream.of(
-                TestFixture.createRegular("+5 Dexterity Vest", 10, 20, 9, 19),
-                TestFixture.createRegular("Elixir of the Mongoose", 2, 0, 1, 0),
-                TestFixture.createRegular("Conjured Mana Cake", 3, 6, 2, 5),
-                TestFixture.createRegular("1664 Beer", 0, 6, -1, 4),
-                TestFixture.createRegular("1664 Beer", -1, 6, -2, 4)
+                ProductFixture.createRegular("+5 Dexterity Vest", 10, 20, 9, 19),
+                ProductFixture.createRegular("Elixir of the Mongoose", 2, 0, 1, 0),
+                ProductFixture.createRegular("Conjured Mana Cake", 3, 6, 2, 5),
+                ProductFixture.createRegular("1664 Beer", 0, 6, -1, 4),
+                ProductFixture.createRegular("1664 Beer", -1, 6, -2, 4)
         );
     }
 
     @ParameterizedTest
-    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras", "provideRegularItems"})
-    void should_update_item_correctly(TestFixture testFixture) {
-        Product product = createItem(testFixture.name, testFixture.sellIn, testFixture.quality);
+    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras", "provideRegularProducts"})
+    void should_update_product_correctly(ProductFixture productFixture) {
+        Product product = createProduct(productFixture.name, productFixture.sellIn, productFixture.quality);
 
         new GildedRose(new Product[]{product}).update_quality();
 
-        Product expectedProduct = createItem(testFixture.name, testFixture.updatedSellIn, testFixture.updatedQuality);
+        Product expectedProduct = createProduct(productFixture.name, productFixture.updatedSellIn, productFixture.updatedQuality);
         assertThat(product.toString()).isEqualTo(expectedProduct.toString());
     }
 
-    private static class TestFixture {
+    private static class ProductFixture {
         String name;
         int sellIn;
         int quality;
         int updatedSellIn;
         int updatedQuality;
 
-        private TestFixture(String name, int sellIn, int quality, int updatedSellIn, int updatedQuality) {
+        private ProductFixture(String name, int sellIn, int quality, int updatedSellIn, int updatedQuality) {
             this.name = name;
             this.sellIn = sellIn;
             this.quality = quality;
@@ -85,20 +85,20 @@ class GildedRoseTest {
             this.updatedQuality = updatedQuality;
         }
 
-        public static TestFixture createRegular(String name, int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new TestFixture(name, sellIn, quality, updatedSellIn, updatedQuality);
+        public static ProductFixture createRegular(String name, int sellIn, int quality, int updatedSellIn, int updatedQuality) {
+            return new ProductFixture(name, sellIn, quality, updatedSellIn, updatedQuality);
         }
 
-        public static TestFixture createAgedBrie(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new TestFixture("Aged Brie", sellIn, quality, updatedSellIn, updatedQuality);
+        public static ProductFixture createAgedBrie(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
+            return new ProductFixture("Aged Brie", sellIn, quality, updatedSellIn, updatedQuality);
         }
 
-        public static TestFixture createSulfuras(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new TestFixture("Sulfuras, Hand of Ragnaros", sellIn, quality, updatedSellIn, updatedQuality);
+        public static ProductFixture createSulfuras(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
+            return new ProductFixture("Sulfuras, Hand of Ragnaros", sellIn, quality, updatedSellIn, updatedQuality);
         }
 
-        public static TestFixture createBackstagePass(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new TestFixture("Backstage passes to a TAFKAL80ETC concert", sellIn, quality, updatedSellIn, updatedQuality);
+        public static ProductFixture createBackstagePass(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
+            return new ProductFixture("Backstage passes to a TAFKAL80ETC concert", sellIn, quality, updatedSellIn, updatedQuality);
         }
     }
 }
