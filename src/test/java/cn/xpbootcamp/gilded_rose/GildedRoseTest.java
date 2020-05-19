@@ -10,15 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GildedRoseTest {
 
-    @ParameterizedTest
-    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras", "provideRegularItems"})
-    void should_update_item_correctly(TestFixture testFixture) {
-        Item item = createItem(testFixture.name, testFixture.sellIn, testFixture.quality);
-
-        new GildedRose(new Item[]{item}).update_quality();
-
-        Item expectedItem = createItem(testFixture.name, testFixture.updatedSellIn, testFixture.updatedQuality);
-        assertThat(item.toString()).isEqualTo(expectedItem.toString());
+    private static Product createItem(String name, int sellIn, int quality) {
+        return new Product(name, sellIn, quality);
     }
 
     private static Stream<TestFixture> provideAgedBries() {
@@ -66,8 +59,15 @@ class GildedRoseTest {
         );
     }
 
-    private static Item createItem(String name, int sellIn, int quality) {
-        return new Item(name, sellIn, quality);
+    @ParameterizedTest
+    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras", "provideRegularItems"})
+    void should_update_item_correctly(TestFixture testFixture) {
+        Product product = createItem(testFixture.name, testFixture.sellIn, testFixture.quality);
+
+        new GildedRose(new Product[]{product}).update_quality();
+
+        Product expectedProduct = createItem(testFixture.name, testFixture.updatedSellIn, testFixture.updatedQuality);
+        assertThat(product.toString()).isEqualTo(expectedProduct.toString());
     }
 
     private static class TestFixture {
