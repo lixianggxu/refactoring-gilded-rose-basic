@@ -1,6 +1,6 @@
 package cn.xpbootcamp.gilded_rose;
 
-public class Product {
+public class CommonProduct {
 
     private String name;
 
@@ -8,7 +8,7 @@ public class Product {
 
     private int quality;
 
-    public Product(String name, int sellIn, int quality) {
+    public CommonProduct(String name, int sellIn, int quality) {
         this.name = name;
         this.sellIn = sellIn;
         this.quality = quality;
@@ -19,7 +19,7 @@ public class Product {
         return this.name + ", " + this.sellIn + ", " + this.quality;
     }
 
-    public void updateQuality() {
+    public void oneDayPass() {
         if (!name.equals("Aged Brie")
                 && !name.equals("Backstage passes to a TAFKAL80ETC concert")) {
             if (quality > 0) {
