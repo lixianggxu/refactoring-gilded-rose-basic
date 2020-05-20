@@ -15,14 +15,22 @@ class GildedRoseTest {
         return new Product(name, sellIn, quality);
     }
 
-    private static Stream<ProductFixture> provideAgedBries() {
-        return Stream.of(
-                ProductFixture.createAgedBrie(2, 0, 1, 1),
-                ProductFixture.createAgedBrie(2, 49, 1, 50),
-                ProductFixture.createAgedBrie(2, 50, 1, 50),
-                ProductFixture.createAgedBrie(0, 20, -1, 22),
-                ProductFixture.createAgedBrie(-1, 20, -2, 22)
-        );
+    @ParameterizedTest
+    @CsvSource(
+            {
+                    " 2, 0, 1, 1",
+                    " 2, 49, 1, 50",
+                    " 2, 50, 1, 50",
+                    " 0, 20, -1, 22",
+                    " -1, 20, -2, 22",
+            }
+    )
+    void should_update_sellIn_and_quatity_when_one_day_pass_given_aged_brieds_product(int sellIn, int quanlity, int updateSellIn, int updateQuanlity) {
+        AgedBrieProduct agedBrieProduct = new AgedBrieProduct(sellIn, quanlity);
+        agedBrieProduct.oneDayPass();
+        AgedBrieProduct expectedCommonProduct = new AgedBrieProduct(updateSellIn, updateQuanlity);
+        assertThat(expectedCommonProduct.toString()).isEqualTo(agedBrieProduct.toString());
+
     }
 
     private static Stream<ProductFixture> provideBackstagePass() {
@@ -69,7 +77,7 @@ class GildedRoseTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras"})
+    @MethodSource({"provideBackstagePass", "provideSulfuras"})
     void should_update_product_correctly(ProductFixture productFixture) {
         Product product = createProduct(productFixture.name, productFixture.sellIn, productFixture.quality);
 
@@ -78,6 +86,7 @@ class GildedRoseTest {
         Product expectedProduct = createProduct(productFixture.name, productFixture.updatedSellIn, productFixture.updatedQuality);
         assertThat(product.toString()).isEqualTo(expectedProduct.toString());
     }
+
 
     private static class ProductFixture {
         String name;
@@ -92,14 +101,6 @@ class GildedRoseTest {
             this.quality = quality;
             this.updatedSellIn = updatedSellIn;
             this.updatedQuality = updatedQuality;
-        }
-
-        public static ProductFixture createRegular(String name, int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new ProductFixture(name, sellIn, quality, updatedSellIn, updatedQuality);
-        }
-
-        public static ProductFixture createAgedBrie(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new ProductFixture("Aged Brie", sellIn, quality, updatedSellIn, updatedQuality);
         }
 
         public static ProductFixture createSulfuras(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
