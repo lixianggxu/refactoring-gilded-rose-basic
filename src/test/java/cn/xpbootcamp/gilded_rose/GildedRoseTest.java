@@ -28,8 +28,8 @@ class GildedRoseTest {
     void should_update_sellIn_and_quatity_when_one_day_pass_given_aged_brieds_product(int sellIn, int quanlity, int updateSellIn, int updateQuanlity) {
         AgedBrieProduct agedBrieProduct = new AgedBrieProduct(sellIn, quanlity);
         agedBrieProduct.oneDayPass();
-        AgedBrieProduct expectedCommonProduct = new AgedBrieProduct(updateSellIn, updateQuanlity);
-        assertThat(expectedCommonProduct.toString()).isEqualTo(agedBrieProduct.toString());
+        AgedBrieProduct expectedagedBrieProduct = new AgedBrieProduct(updateSellIn, updateQuanlity);
+        assertThat(expectedagedBrieProduct.toString()).isEqualTo(agedBrieProduct.toString());
 
     }
 
@@ -49,14 +49,23 @@ class GildedRoseTest {
         );
     }
 
-    private static Stream<ProductFixture> provideSulfuras() {
-        return Stream.of(
-                ProductFixture.createSulfuras(-1, 50, -1, 50),
-                ProductFixture.createSulfuras(-1, 1, -1, 1),
-                ProductFixture.createSulfuras(-2, 1, -2, 1),
-                ProductFixture.createSulfuras(1, 1, 1, 1)
-        );
+
+    @ParameterizedTest
+    @CsvSource(
+            {
+                    "-1,50, -1, 50",
+                    "-1, 1, -1, 1",
+                    "-2, 1, -2, 1",
+                    "1, 1, 1, 1",
+            }
+    )
+    void should_update_sellIn_and_quatity_when_one_day_pass_given_surfras_product(int sellIn, int quanlity, int updateSellIn, int updateQuanlity) {
+        SulfurasProduct sulfurasProduct = new SulfurasProduct(sellIn, quanlity);
+        SulfurasProduct expectedSulfurasProduct = new SulfurasProduct(updateSellIn, updateQuanlity);
+        assertThat(sulfurasProduct.toString()).isEqualTo(expectedSulfurasProduct.toString());
+
     }
+
 
     @ParameterizedTest
     @CsvSource(
@@ -77,7 +86,7 @@ class GildedRoseTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"provideBackstagePass", "provideSulfuras"})
+    @MethodSource({"provideBackstagePass",})
     void should_update_product_correctly(ProductFixture productFixture) {
         Product product = createProduct(productFixture.name, productFixture.sellIn, productFixture.quality);
 
@@ -103,9 +112,6 @@ class GildedRoseTest {
             this.updatedQuality = updatedQuality;
         }
 
-        public static ProductFixture createSulfuras(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
-            return new ProductFixture("Sulfuras, Hand of Ragnaros", sellIn, quality, updatedSellIn, updatedQuality);
-        }
 
         public static ProductFixture createBackstagePass(int sellIn, int quality, int updatedSellIn, int updatedQuality) {
             return new ProductFixture("Backstage passes to a TAFKAL80ETC concert", sellIn, quality, updatedSellIn, updatedQuality);
