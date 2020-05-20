@@ -19,21 +19,15 @@ public class BackstagePassProduct {
 
     public void oneDayPass() {
         oneDayPassBeforPerformance();
-        sellIn = sellIn - 1;
-        if (sellIn < 0) {
-            quality = 0;
-        }
+        sellIn -= 1;
+        if (sellIn < 0) quality = 0;
 
     }
 
     private void oneDayPassBeforPerformance() {
-        quality = quality + 1;
-        if (sellIn < 11) {
-            quality = quality + 1;
-        }
-        if (sellIn < 6) {
-            quality = quality + 1;
-        }
+        quality += 1;
+        if (sellIn < 11) quality += 1;
+        if (sellIn < 6) quality++;
         quality = Math.min(50, quality);
     }
 

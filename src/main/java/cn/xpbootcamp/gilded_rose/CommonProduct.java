@@ -19,13 +19,8 @@ public class CommonProduct {
 
     public void oneDayPass() {
         sellIn--;
-        quality = quality - 1;
-
-        if (sellIn < 0) {
-            quality = quality - 1;
-            }
-        if (quality < 0) {
-            quality = 0;
-        }
-        }
+        quality -= 1;
+        if (sellIn < 0) quality -= 1;
+        if (quality < 0) quality = 0;
+    }
 }
