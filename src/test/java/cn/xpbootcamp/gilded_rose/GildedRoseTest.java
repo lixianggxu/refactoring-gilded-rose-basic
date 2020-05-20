@@ -1,6 +1,7 @@
 package cn.xpbootcamp.gilded_rose;
 
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
@@ -49,18 +50,26 @@ class GildedRoseTest {
         );
     }
 
-    private static Stream<ProductFixture> provideRegularProducts() {
-        return Stream.of(
-                ProductFixture.createRegular("+5 Dexterity Vest", 10, 20, 9, 19),
-                ProductFixture.createRegular("Elixir of the Mongoose", 2, 0, 1, 0),
-                ProductFixture.createRegular("Conjured Mana Cake", 3, 6, 2, 5),
-                ProductFixture.createRegular("1664 Beer", 0, 6, -1, 4),
-                ProductFixture.createRegular("1664 Beer", -1, 6, -2, 4)
-        );
+    @ParameterizedTest
+    @CsvSource(
+            {
+                    " 10, 20, 9, 19",
+                    " 2, 0, 1, 0",
+                    " 3, 6, 2, 5",
+                    " 0, 6, -1, 4",
+                    " -1, 6, -2, 4",
+            }
+    )
+    void should_update_sellIn_and_quatity_when_one_day_pass_given_common_product(int sellIn, int quanlity, int updateSellIn, int updateQuanlity) {
+        CommonProduct commonProduct = new CommonProduct(sellIn, quanlity);
+        commonProduct.oneDayPass();
+        CommonProduct expectedCommonProduct = new CommonProduct(updateSellIn, updateQuanlity);
+        assertThat(commonProduct.toString()).isEqualTo(expectedCommonProduct.toString());
+
     }
 
     @ParameterizedTest
-    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras", "provideRegularProducts"})
+    @MethodSource({"provideAgedBries", "provideBackstagePass", "provideSulfuras"})
     void should_update_product_correctly(ProductFixture productFixture) {
         Product product = createProduct(productFixture.name, productFixture.sellIn, productFixture.quality);
 
